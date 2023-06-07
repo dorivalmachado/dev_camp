@@ -18,4 +18,9 @@ const createUserService = async (
     return user
 }
 
-export {createUserService}
+const retrieveAllUsersService = async (): Promise<Document[]> => {
+    const users: Document[] = await usersModel.find({})
+    return users
+}
+
+export {createUserService, retrieveAllUsersService}

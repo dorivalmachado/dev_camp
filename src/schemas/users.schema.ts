@@ -45,6 +45,14 @@ usersSchema.pre("save", async function ()  {
     this.password = await hash(this.password, salt)
 })
 
+usersSchema.post("save", { errorHandler: true }, function (error: any, _, next) {
+    if(error.code === 11000 && error.name === "MongoServerError") {
+        next(new Error("User validation failed: email: Email already in use"))
+    } else{
+        next(error)
+    };
+})
+
 const usersModel = mongoose.model<IUser>("User", usersSchema)
 
 export default usersModel
