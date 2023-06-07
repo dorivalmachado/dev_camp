@@ -4,4 +4,23 @@ type Query {
 
 type User {
   id: ID
+  name: String!
+  email: String!
+  role: String!
+  resetPasswordToken: String
+  resetPasswordExpire: String
+  confirmEmailToken: String
+  isEmailConfirmed: Boolean
+  twoFactorCode: String
+  twoFactorCodeExpire: String
+  twoFactorEnable: Boolean
+}
+
+type Mutation {
+  addNewUser(
+    name: String!
+    email: String!
+    role: String!
+    password: String!
+  ): User
 }
