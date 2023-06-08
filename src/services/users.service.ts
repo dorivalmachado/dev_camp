@@ -96,11 +96,42 @@ const forgotPasswordService = async (email: string): Promise<{[key: string]: str
     
 }
 
+const resetPasswordService = async (email: string, newPassword: string, resetPasswordToken: string): Promise<{[key: string]: string}> => {
+    const userDocument: Document | null = await usersModel.findOne({email})
+    if(!userDocument) throw new Error("User not found")
+    
+    const user: IUser = userDocument.toObject()
+    if(!user.resetPasswordToken) throw new Error("Invalid reset password token")
+
+    const tokensMatch: boolean = await compare(resetPasswordToken, user.resetPasswordToken)
+    if(!tokensMatch) throw new Error("Invalid reset password token")
+
+    if(!user.resetPasswordExpire || user.resetPasswordExpire < new Date()) {
+        throw new Error("Reset password token expired")
+    }
+    
+
+    const salt = await genSalt(10)
+    const hashPassword: string = await hash(newPassword, salt)
+
+    await usersModel.findOneAndUpdate(
+        {email},
+        {
+            password: hashPassword,
+            resetPasswordExpire: null,
+            resetPasswordToken: null
+        }
+    )
+
+    return {message: "Password updated"}
+}
+
 export {
     createUserService,
     retrieveAllUsersService,
     loginUserService,
     authUserService,
     retrieveUserById,
-    forgotPasswordService
+    forgotPasswordService,
+    resetPasswordService
 }

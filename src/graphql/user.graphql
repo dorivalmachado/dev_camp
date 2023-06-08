@@ -11,7 +11,12 @@ type Mutation {
     password: String!
   ): User
   loginUser(email: String!, password: String!): Token
-  forgotPassword(email: String): Message
+  forgotPassword(email: String!): Message
+  resetPassword(
+    email: String!
+    newPassword: String!
+    resetPasswordToken: String!
+  ): Message
 }
 
 type User {
