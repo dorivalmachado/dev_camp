@@ -58,4 +58,11 @@ const getUserRoleService = async (id: string): Promise<string> => {
     return user.toObject().role
 }
 
-export {createUserService, retrieveAllUsersService, loginUserService, authUserService, getUserRoleService}
+const retrieveUserById = async (id: string): Promise<Document> => {
+    const user: Document | null = await usersModel.findById(id)
+    if(!user) throw new Error("User not found")
+
+    return user
+}
+
+export {createUserService, retrieveAllUsersService, loginUserService, authUserService, getUserRoleService, retrieveUserById}

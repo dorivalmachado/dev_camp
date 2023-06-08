@@ -1,8 +1,16 @@
-import { IMutationAddNewUser, IMutationLogin } from "../interfaces/users.interface";
+import { IMutationAddNewUser, IMutationLogin, IUserToken } from "../interfaces/users.interface";
+import { authUserService, retrieveUserById } from "../services/users.service";
 import { createUserService, loginUserService, retrieveAllUsersService } from "../services/users.service";
+import "dotenv/config"
 
 const Query = {
-    users: retrieveAllUsersService
+    users: retrieveAllUsersService,
+    user: (_parent: any, _args: any, context: IUserToken) => {
+        const {token} = context
+        const id: string = await authUserService(token, String(process.env.JWT_SECRET_KEY))
+
+        return await retrieveUserById(id)
+    }
 }
 
 const Mutation = {

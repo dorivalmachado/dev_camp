@@ -17,4 +17,8 @@ type IMutationAddNewUser = Pick<IUser, "name" | "email" | "role" | "password">
 
 type IMutationLogin = Pick<IUser,  "email" | "password">
 
-export {IUser, IMutationAddNewUser, IMutationLogin}
+interface IUserToken {
+    token: string
+}
+
+export {IUser, IMutationAddNewUser, IMutationLogin, IUserToken}
