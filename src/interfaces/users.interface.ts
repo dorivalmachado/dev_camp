@@ -13,12 +13,4 @@ interface IUser {
     twoFactorEnable: boolean | null
 }
 
-type IMutationAddNewUser = Pick<IUser, "name" | "email" | "role" | "password">
-
-type IMutationLogin = Pick<IUser,  "email" | "password">
-
-interface IUserToken {
-    token: string
-}
-
-export {IUser, IMutationAddNewUser, IMutationLogin, IUserToken}
+export {IUser}

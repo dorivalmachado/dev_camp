@@ -1,9 +1,10 @@
 import { IUser } from "../interfaces/users.interface";
 import { Document } from "mongoose";
 import usersModel from "../schemas/users.schema";
-import { compare } from "bcryptjs";
+import { compare, genSalt, hash } from "bcryptjs";
 import "dotenv/config"
 import { VerifyErrors, sign, verify } from "jsonwebtoken";
+import {sendEmail} from "../utils/sendEmail.utils"
 
 const createUserService = async (
     name: string,
@@ -51,13 +52,6 @@ const authUserService = async (token: string, secretKey: string): Promise<string
     return idOrError
 }
 
-const getUserRoleService = async (id: string): Promise<string> => {
-    const user: Document | null = await usersModel.findById(id)
-
-    if(!user) throw new Error("User not found")
-    return user.toObject().role
-}
-
 const retrieveUserById = async (id: string): Promise<Document> => {
     const user: Document | null = await usersModel.findById(id)
     if(!user) throw new Error("User not found")
@@ -65,4 +59,48 @@ const retrieveUserById = async (id: string): Promise<Document> => {
     return user
 }
 
-export {createUserService, retrieveAllUsersService, loginUserService, authUserService, getUserRoleService, retrieveUserById}
+const forgotPasswordService = async (email: string): Promise<{[key: string]: string}> => {
+    const userDocument: Document | null = await usersModel.findOne({email})
+    if(!userDocument) throw new Error("User not found")
+
+    const user: IUser = userDocument.toObject()
+    
+    const resetPasswordToken = Math.floor(Math.random() * 9999).toString().padStart(4, "0")
+    const salt = await genSalt(10)
+    user.resetPasswordToken = await hash(resetPasswordToken, salt)!
+    
+    const expirationTime = new Date()
+    expirationTime.setHours(expirationTime.getHours() + 1)
+    user.resetPasswordExpire = expirationTime
+
+    const message = `Use this token to reset your password: \n\n ${resetPasswordToken}` 
+    try{
+        await sendEmail({
+            email,
+            subject: "Reset password token",
+            message
+        })
+    } catch(err){
+        throw new Error("Missing SMTP credentials")
+    }
+
+    await usersModel.findOneAndUpdate(
+        {email},
+        {
+            resetPasswordExpire: user.resetPasswordExpire,
+            resetPasswordToken: user.resetPasswordToken
+        }
+    )
+
+    return {message: "Reset password token sent by email"}
+    
+}
+
+export {
+    createUserService,
+    retrieveAllUsersService,
+    loginUserService,
+    authUserService,
+    retrieveUserById,
+    forgotPasswordService
+}

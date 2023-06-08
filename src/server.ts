@@ -18,7 +18,7 @@ const startServer = async () => {
                 
                 return {token}
             },
-          }),
+        }),
     )
 
     const PORT: number = Number(process.env.APP_PORT) || 3000
