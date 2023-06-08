@@ -1,5 +1,5 @@
-import { IMutationAddNewUser } from "../interfaces/users.interface";
-import { createUserService, retrieveAllUsersService } from "../services/users.service";
+import { IMutationAddNewUser, IMutationLogin } from "../interfaces/users.interface";
+import { createUserService, loginUserService, retrieveAllUsersService } from "../services/users.service";
 
 const Query = {
     users: retrieveAllUsersService
@@ -11,7 +11,8 @@ const Mutation = {
         args.email,
         args.role,
         args.password
-    )
+    ),
+    loginUser: (_: any, args: IMutationLogin) => loginUserService(args.email, args.password)
 }
 
 export {Query, Mutation}

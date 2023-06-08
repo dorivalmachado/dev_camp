@@ -12,7 +12,13 @@ const startServer = async () => {
     app.use(
         '/graphql',
         json(),
-        expressMiddleware(server),
+        expressMiddleware(server, {
+            context: async ({ req: {headers} }) => { 
+                const token = headers?.authorization?.split(" ")[1] ?? ""
+                
+                return {token}
+            },
+          }),
     )
 
     const PORT: number = Number(process.env.APP_PORT) || 3000

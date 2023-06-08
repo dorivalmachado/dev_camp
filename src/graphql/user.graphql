@@ -16,6 +16,10 @@ type User {
   twoFactorEnable: Boolean
 }
 
+type Token {
+  token: String!
+}
+
 type Mutation {
   addNewUser(
     name: String!
@@ -23,4 +27,5 @@ type Mutation {
     role: String!
     password: String!
   ): User
+  loginUser(email: String!, password: String!): Token
 }
