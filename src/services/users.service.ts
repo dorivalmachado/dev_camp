@@ -126,6 +126,22 @@ const resetPasswordService = async (email: string, newPassword: string, resetPas
     return {message: "Password updated"}
 }
 
+const updatePasswordService = async (email: string, newPassword: string, password: string): Promise<{[key: string]: string}> => {
+    const salt = await genSalt(10)
+    const hashPassword: string = await hash(newPassword, salt)
+
+    const userDocument: Document | null = await usersModel.findOne({email}).select("+password")
+    if(!userDocument) throw new Error("Invalid credentials")
+    
+    const user: IUser = userDocument.toObject()
+    const passwordMatch: boolean = await compare(password, user.password)
+    if(!passwordMatch) throw new Error("Invalid credentials")
+
+    await usersModel.findOneAndUpdate({email}, {password: hashPassword})
+
+    return {message: "Password updated"}
+}
+
 export {
     createUserService,
     retrieveAllUsersService,
@@ -133,5 +149,6 @@ export {
     authUserService,
     retrieveUserById,
     forgotPasswordService,
-    resetPasswordService
+    resetPasswordService,
+    updatePasswordService,
 }

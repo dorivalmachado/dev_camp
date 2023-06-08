@@ -12,9 +12,15 @@ interface IMutationResetPassword {
     resetPasswordToken: string
 }
 
+interface IMutationUpdatePassword {
+    password: string
+    newPassword: string
+}
+
 export {
     IMutationAddNewUser,
     IMutationLogin,
     IMutationForgotPassword,
-    IMutationResetPassword
+    IMutationResetPassword,
+    IMutationUpdatePassword
 }

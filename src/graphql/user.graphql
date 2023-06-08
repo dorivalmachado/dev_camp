@@ -17,6 +17,7 @@ type Mutation {
     newPassword: String!
     resetPasswordToken: String!
   ): Message
+  updatePassword(password: String!, newPassword: String!): Message
 }
 
 type User {

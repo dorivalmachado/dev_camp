@@ -4,6 +4,9 @@ import { isAuthenticated } from "./rules";
 const permissions = shield({
     Query: {
         user: isAuthenticated
+    },
+    Mutation: {
+        updatePassword: isAuthenticated
     }
 })
 
