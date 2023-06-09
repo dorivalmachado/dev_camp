@@ -2,6 +2,8 @@ import { IUser } from "./users.interface"
 
 type IMutationAddNewUser = Pick<IUser, "name" | "email" | "role" | "password">
 
+type IMutationUpdateUser = Partial<Pick<IUser, "name" | "email">>
+
 type IMutationLogin = Pick<IUser,  "email" | "password">
 
 type IMutationForgotPassword = Pick<IUser, "email">
@@ -22,5 +24,6 @@ export {
     IMutationLogin,
     IMutationForgotPassword,
     IMutationResetPassword,
-    IMutationUpdatePassword
+    IMutationUpdatePassword,
+    IMutationUpdateUser,
 }

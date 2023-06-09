@@ -10,6 +10,7 @@ type Mutation {
     role: String!
     password: String!
   ): User
+  updateUser(name: String, email: String): User
   loginUser(email: String!, password: String!): Token
   forgotPassword(email: String!): Message
   resetPassword(

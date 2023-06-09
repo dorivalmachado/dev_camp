@@ -142,6 +142,22 @@ const updatePasswordService = async (email: string, newPassword: string, passwor
     return {message: "Password updated"}
 }
 
+const updateUserService = async (
+    id: string,
+    name: string | undefined,
+    email: string | undefined,
+):Promise<Document>  => {
+    const payload: {
+        [key: string]: string | undefined
+    } = {name, email}
+    Object.keys(payload).forEach((key: string) => payload[key] === undefined && delete payload[key])
+    
+    const userDocument: Document | null = await usersModel.findOneAndUpdate({_id: id}, payload, {new: true})
+    if(!userDocument) throw new Error("Invalid credentials")
+    
+    return userDocument
+}
+
 export {
     createUserService,
     retrieveAllUsersService,
@@ -151,4 +167,5 @@ export {
     forgotPasswordService,
     resetPasswordService,
     updatePasswordService,
+    updateUserService
 }
