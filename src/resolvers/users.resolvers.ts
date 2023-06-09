@@ -1,6 +1,6 @@
 import { IContext } from "../interfaces/context.interface";
 import { IMutationAddNewUser, IMutationForgotPassword, IMutationLogin, IMutationResetPassword, IMutationUpdatePassword, IMutationUpdateUser } from "../interfaces/mutation.interface";
-import { createUserService, forgotPasswordService, loginUserService, resetPasswordService, retrieveAllUsersService, retrieveUserById, updatePasswordService, updateUserService } from "../services/users.service";
+import { createUserService, deleteUserService, forgotPasswordService, loginUserService, resetPasswordService, retrieveAllUsersService, retrieveUserById, updatePasswordService, updateUserService } from "../services/users.service";
 import "dotenv/config"
 
 const Query = {
@@ -28,6 +28,7 @@ const Mutation = {
         args: IMutationUpdateUser,
         context: IContext
     ) => updateUserService(context.user?._id!, args.name, args.email),
+    deleteUser: (_parent: any, _args: any, context: IContext) => deleteUserService(context.user?._id!),
 }
 
 export {Query, Mutation}

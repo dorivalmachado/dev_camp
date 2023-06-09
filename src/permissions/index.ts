@@ -8,6 +8,7 @@ const permissions = shield({
     Mutation: {
         updatePassword: isAuthenticated,
         updateUser: isAuthenticated,
+        deleteUser: isAuthenticated,
     }
 })
 

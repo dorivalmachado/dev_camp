@@ -158,6 +158,13 @@ const updateUserService = async (
     return userDocument
 }
 
+const deleteUserService = async (id: string):Promise<Document>  => {
+    const userDocument: Document | null = await usersModel.findOneAndDelete({_id: id})
+    if(!userDocument) throw new Error("Invalid credentials")
+    
+    return userDocument
+}
+
 export {
     createUserService,
     retrieveAllUsersService,
@@ -167,5 +174,6 @@ export {
     forgotPasswordService,
     resetPasswordService,
     updatePasswordService,
-    updateUserService
+    updateUserService,
+    deleteUserService,
 }

@@ -11,6 +11,7 @@ type Mutation {
     password: String!
   ): User
   updateUser(name: String, email: String): User
+  deleteUser: User
   loginUser(email: String!, password: String!): Token
   forgotPassword(email: String!): Message
   resetPassword(
