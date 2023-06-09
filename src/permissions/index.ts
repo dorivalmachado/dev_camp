@@ -9,6 +9,8 @@ const permissions = shield({
         updatePassword: isAuthenticated,
         updateUser: isAuthenticated,
         deleteUser: isAuthenticated,
+        sendConfirmEmailToken: isAuthenticated,
+        confirmEmail: isAuthenticated,
     }
 })
 

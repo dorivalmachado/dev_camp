@@ -1,6 +1,6 @@
 import { IContext } from "../interfaces/context.interface";
 import { IMutationAddNewUser, IMutationForgotPassword, IMutationLogin, IMutationResetPassword, IMutationUpdatePassword, IMutationUpdateUser } from "../interfaces/mutation.interface";
-import { createUserService, deleteUserService, forgotPasswordService, loginUserService, resetPasswordService, retrieveAllUsersService, retrieveUserById, updatePasswordService, updateUserService } from "../services/users.service";
+import { confirmEmailService, createUserService, deleteUserService, loginUserService, resetPasswordService, retrieveAllUsersService, retrieveUserById, sendTokenService, updatePasswordService, updateUserService } from "../services/users.service";
 import "dotenv/config"
 
 const Query = {
@@ -16,7 +16,7 @@ const Mutation = {
         args.password
     ),
     loginUser: (_parent: any, args: IMutationLogin) => loginUserService(args.email, args.password),
-    forgotPassword: (_parent: any, args: IMutationForgotPassword) => forgotPasswordService(args.email),
+    forgotPassword: (_parent: any, args: IMutationForgotPassword) => sendTokenService(args.email, "Reset password"),
     resetPassword: (_parent: any, args: IMutationResetPassword) => resetPasswordService(args.email, args.newPassword, args.resetPasswordToken),
     updatePassword: (
         _parent: any,
@@ -29,6 +29,8 @@ const Mutation = {
         context: IContext
     ) => updateUserService(context.user?._id!, args.name, args.email),
     deleteUser: (_parent: any, _args: any, context: IContext) => deleteUserService(context.user?._id!),
+    sendConfirmEmailToken: (_parent: any, _args: any, context: IContext) => sendTokenService(context.user?.email!, "Confirm email"),
+    confirmEmail: (_parent: any, args: {confirmEmailToken: string}, context: IContext) => confirmEmailService(context.user?.email!, args.confirmEmailToken),
 }
 
 export {Query, Mutation}

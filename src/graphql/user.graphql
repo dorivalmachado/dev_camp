@@ -20,6 +20,8 @@ type Mutation {
     resetPasswordToken: String!
   ): Message
   updatePassword(password: String!, newPassword: String!): Message
+  sendConfirmEmailToken(email: String!): Message
+  confirmEmail(confirmEmailToken: String!): Message
 }
 
 type User {

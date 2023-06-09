@@ -27,7 +27,7 @@ const retrieveAllUsersService = async (): Promise<Document[]> => {
     return users
 }
 
-const loginUserService = async (email: string, password: string): Promise<{[key: string]: string}> => {
+const loginUserService = async (email: string, password: string): Promise<{token: string}> => {
     const userDoc: Document<unknown, {}, IUser> | null = await usersModel.findOne({email}).select("+password")
 
     if(!userDoc) throw new Error("Invalid email or password")
@@ -59,44 +59,63 @@ const retrieveUserById = async (id: string): Promise<Document> => {
     return user
 }
 
-const forgotPasswordService = async (email: string): Promise<{[key: string]: string}> => {
-    const userDocument: Document | null = await usersModel.findOne({email})
-    if(!userDocument) throw new Error("User not found")
+const sendTokenService = async (
+    email: string,
+    subject: "Reset password" | "Confirm email"
+    ): Promise<{message: string}> => {
+        const userDocument: Document | null = await usersModel.findOne({email})
+        if(!userDocument) throw new Error("User not found")
 
-    const user: IUser = userDocument.toObject()
-    
-    const resetPasswordToken = Math.floor(Math.random() * 9999).toString().padStart(4, "0")
-    const salt = await genSalt(10)
-    user.resetPasswordToken = await hash(resetPasswordToken, salt)!
-    
-    const expirationTime = new Date()
-    expirationTime.setHours(expirationTime.getHours() + 1)
-    user.resetPasswordExpire = expirationTime
-
-    const message = `Use this token to reset your password: \n\n ${resetPasswordToken}` 
-    try{
-        await sendEmail({
-            email,
-            subject: "Reset password token",
-            message
-        })
-    } catch(err){
-        throw new Error("Missing SMTP credentials")
-    }
-
-    await usersModel.findOneAndUpdate(
-        {email},
-        {
-            resetPasswordExpire: user.resetPasswordExpire,
-            resetPasswordToken: user.resetPasswordToken
+        const token = Math.floor(Math.random() * 9999).toString().padStart(4, "0")
+        const salt = await genSalt(10)
+        const hashedToken = await hash(token, salt)!
+        
+        const expirationTime = new Date()
+        expirationTime.setHours(expirationTime.getHours() + 1)
+        
+        
+        const message = `This is your ${subject.toLowerCase()} token: \n\n ${token}` 
+        try{
+            await sendEmail({
+                email,
+                subject: `${subject} token`,
+                message
+            })
+        } catch(err){
+            throw new Error("Missing SMTP credentials")
         }
-    )
+        
+        const user: IUser = userDocument.toObject()
 
-    return {message: "Reset password token sent by email"}
+        if(subject.includes("password")) {
+            user.resetPasswordToken = hashedToken
+            user.resetPasswordExpire = expirationTime
+            
+            await usersModel.findOneAndUpdate(
+                {email},
+                {
+                    resetPasswordExpire: user.resetPasswordExpire,
+                    resetPasswordToken: user.resetPasswordToken
+                }
+            )
+        }
+        
+        if(subject.includes("email")) {
+            user.confirmEmailToken = hashedToken
+            
+            await usersModel.findOneAndUpdate(
+                {email},
+                {
+                    confirmEmailToken: user.confirmEmailToken
+                }
+            )
+        }
+
+        return {message: `${subject} token sent by email`}
     
 }
 
-const resetPasswordService = async (email: string, newPassword: string, resetPasswordToken: string): Promise<{[key: string]: string}> => {
+const resetPasswordService = async (email: string, newPassword: string, resetPasswordToken: string): Promise<{message: string}> => {
     const userDocument: Document | null = await usersModel.findOne({email})
     if(!userDocument) throw new Error("User not found")
     
@@ -126,7 +145,27 @@ const resetPasswordService = async (email: string, newPassword: string, resetPas
     return {message: "Password updated"}
 }
 
-const updatePasswordService = async (email: string, newPassword: string, password: string): Promise<{[key: string]: string}> => {
+const confirmEmailService = async (email: string, confirmEmailToken: string): Promise<{message: string}> => {
+    const userDocument: Document | null = await usersModel.findOne({email})
+    if(!userDocument) throw new Error("User not found")
+    
+    const user: IUser = userDocument.toObject()
+    if(!user.confirmEmailToken) throw new Error("Confirm email token not found")
+
+    const tokensMatch: boolean = await compare(confirmEmailToken, user.confirmEmailToken)
+    if(!tokensMatch) throw new Error("Invalid token")
+
+    await usersModel.findOneAndUpdate(
+        {email},
+        {
+            isEmailConfirmed: true
+        }
+    )
+
+    return {message: "Email confirmed"}
+}
+
+const updatePasswordService = async (email: string, newPassword: string, password: string): Promise<{message: string}> => {
     const salt = await genSalt(10)
     const hashPassword: string = await hash(newPassword, salt)
 
@@ -171,9 +210,10 @@ export {
     loginUserService,
     authUserService,
     retrieveUserById,
-    forgotPasswordService,
+    sendTokenService,
     resetPasswordService,
     updatePasswordService,
     updateUserService,
     deleteUserService,
+    confirmEmailService,
 }
