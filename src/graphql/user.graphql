@@ -1,7 +1,47 @@
 type Query {
   users: [User]
+  user: User
+}
+
+type Mutation {
+  addNewUser(
+    name: String!
+    email: String!
+    role: String!
+    password: String!
+  ): User
+  updateUser(name: String, email: String): User
+  deleteUser: User
+  loginUser(email: String!, password: String!): Token
+  forgotPassword(email: String!): Message
+  resetPassword(
+    email: String!
+    newPassword: String!
+    resetPasswordToken: String!
+  ): Message
+  updatePassword(password: String!, newPassword: String!): Message
+  sendConfirmEmailToken(email: String!): Message
+  confirmEmail(confirmEmailToken: String!): Message
 }
 
 type User {
   id: ID
+  name: String!
+  email: String!
+  role: String!
+  resetPasswordToken: String
+  resetPasswordExpire: String
+  confirmEmailToken: String
+  isEmailConfirmed: Boolean
+  twoFactorCode: String
+  twoFactorCodeExpire: String
+  twoFactorEnable: Boolean
+}
+
+type Token {
+  token: String!
+}
+
+type Message {
+  message: String!
 }
