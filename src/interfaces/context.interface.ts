@@ -1,4 +1,4 @@
-import { IUser } from "./users.interface"
+import { IUser } from "./users/users.interface"
 
 interface IContext {
     token: string

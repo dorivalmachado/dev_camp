@@ -1,5 +1,5 @@
 import { IContext } from "../interfaces/context.interface";
-import { IMutationAddNewUser, IMutationForgotPassword, IMutationLogin, IMutationResetPassword, IMutationUpdatePassword, IMutationUpdateUser } from "../interfaces/mutation.interface";
+import { IMutationAddNewUser, IMutationForgotPassword, IMutationLogin, IMutationResetPassword, IMutationUpdatePassword, IMutationUpdateUser } from "../interfaces/users/usersQuery.interface";
 import { confirmEmailService, createUserService, deleteUserService, loginUserService, resetPasswordService, retrieveAllUsersService, retrieveUserById, sendTokenService, updatePasswordService, updateUserService } from "../services/users.service";
 import "dotenv/config"
 

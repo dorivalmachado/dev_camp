@@ -1,6 +1,6 @@
-import { IUser } from "../interfaces/users.interface";
+import { IUser } from "../interfaces/users/users.interface";
 import { Document } from "mongoose";
-import usersModel from "../schemas/users.schema";
+import usersModel from "../models/users.model";
 import { compare, genSalt, hash } from "bcryptjs";
 import "dotenv/config"
 import { VerifyErrors, sign, verify } from "jsonwebtoken";

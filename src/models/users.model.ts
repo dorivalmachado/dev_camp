@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { IUser } from "../interfaces/users.interface";
+import { IUser } from "../interfaces/users/users.interface";
 import { genSalt, hash } from "bcryptjs";
 
 const usersSchema = new mongoose.Schema<IUser>({
@@ -29,12 +29,6 @@ const usersSchema = new mongoose.Schema<IUser>({
     resetPasswordExpire: Date,
     confirmEmailToken: String,
     isEmailConfirmed: {
-        type: Boolean,
-        default: false
-    },
-    twoFactorCode: String,
-    twoFactorCodeExpire: Date,
-    twoFactorEnable: {
         type: Boolean,
         default: false
     },

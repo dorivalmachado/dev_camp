@@ -3,7 +3,7 @@ import { IContext } from "../interfaces/context.interface";
 import { authUserService, retrieveUserById } from "../services/users.service";
 import "dotenv/config"
 import { Document } from "mongoose";
-import { IUser } from "../interfaces/users.interface";
+import { IUser } from "../interfaces/users/users.interface";
 
 const isUser = rule()(async (_parent: any, _args: any, context: IContext): Promise<boolean> => {
     const {token} = context

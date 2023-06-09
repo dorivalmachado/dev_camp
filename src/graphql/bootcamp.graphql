@@ -1,0 +1,36 @@
+type Query {
+  bootcamps: [Bootcamp]
+}
+
+# type Mutation{}
+
+type Bootcamp {
+  id: ID
+  name: String!
+  slug: String!
+  description: String!
+  website: String!
+  phone: String!
+  email: String!
+  address: String!
+  location: Location
+  careers: [String]!
+  averageRating: Float
+  price: Float!
+  housing: Boolean
+  jobAssistance: Boolean
+  jobGuarantee: Boolean
+  acceptGi: Boolean
+  user: String!
+}
+
+type Location {
+  type: String
+  coordinates: [Float]
+  formattedAddress: String
+  street: String
+  city: String
+  state: String
+  zipcode: String
+  country: String
+}
