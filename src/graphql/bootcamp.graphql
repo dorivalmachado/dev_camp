@@ -12,7 +12,25 @@ type Mutation {
     email: String!
     address: String!
     careers: [String]!
+    housing: Boolean
+    jobAssistance: Boolean
+    jobGuarantee: Boolean
+    acceptGi: Boolean
     user: ID
+  ): Bootcamp
+  updateBootcamp(
+    id: ID!
+    name: String
+    description: String
+    website: String
+    phone: String
+    email: String
+    address: String
+    careers: [String]
+    housing: Boolean
+    jobAssistance: Boolean
+    jobGuarantee: Boolean
+    acceptGi: Boolean
   ): Bootcamp
 }
 
@@ -28,12 +46,12 @@ type Bootcamp {
   location: Location
   careers: [String]!
   averageRating: Float
-  averageCost: Float!
+  averageCost: Float
   housing: Boolean
   jobAssistance: Boolean
   jobGuarantee: Boolean
   acceptGi: Boolean
-  user: String!
+  user: User
 }
 
 type Location {

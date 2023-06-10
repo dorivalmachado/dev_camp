@@ -1,7 +1,5 @@
-interface ISendEmail {
-    email: string
-    subject: string
-    message: string
+export interface ISendEmail {
+  email: string
+  subject: string
+  message: string
 }
-
-export { ISendEmail}

@@ -1,52 +1,62 @@
-import mongoose from "mongoose";
-import { IUser } from "../interfaces/users/users.interface";
-import { genSalt, hash } from "bcryptjs";
+import mongoose, { Document } from 'mongoose';
+import { genSalt, hash } from 'bcryptjs';
 
-const usersSchema = new mongoose.Schema<IUser>({
-    name: {
-        type: String,
-        required: [true, "Name is required"]
-    },
-    email: {
-        type: String,
-        required: [true, "Email is required"],
-        unique: true,
-        lowercase: true,
-        match: [/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g, "Invalid email"]
-    },
-    role: {
-        type: String,
-        enum: ["user", "publisher"],
-        default: "user"
-    },
-    password: {
-        type: String,
-        required: [true, "Password is required"],
-        select: false,
-        minlength: 8
-    },
-    resetPasswordToken: String,
-    resetPasswordExpire: Date,
-    confirmEmailToken: String,
-    isEmailConfirmed: {
-        type: Boolean,
-        default: false
-    },
-})
+interface UserDocument extends Document{
+  name: string
+  email: string
+  role: string
+  password: string
+  resetPasswordToken: string | null
+  resetPasswordExpire: Date | null
+  confirmEmailToken: string | null
+  isEmailConfirmed: boolean | null
+}
 
-usersSchema.pre("save", async function ()  {
-    const salt = await genSalt(10)
-    this.password = await hash(this.password, salt)
-})
+const usersSchema = new mongoose.Schema<UserDocument>({
+  name: {
+    type: String,
+    required: [true, 'Name is required'],
+  },
+  email: {
+    type: String,
+    required: [true, 'Email is required'],
+    unique: true,
+    lowercase: true,
+    match: [/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g, 'Invalid email'],
+  },
+  role: {
+    type: String,
+    enum: ['user', 'publisher'],
+    default: 'user',
+  },
+  password: {
+    type: String,
+    required: [true, 'Password is required'],
+    select: false,
+    minlength: 8,
+  },
+  resetPasswordToken: String,
+  resetPasswordExpire: Date,
+  confirmEmailToken: String,
+  isEmailConfirmed: {
+    type: Boolean,
+    default: false,
+  },
+});
 
-usersSchema.post("save", { errorHandler: true }, function (error: any, _, next) {
-    if(error.code === 11000 && error.name === "MongoServerError") {
-        next(new Error("User validation failed: email: Email already in use"))
-    } else{
-        next(error)
-    };
-})
+usersSchema.pre('save', async function () {
+  const salt = await genSalt(10);
+  this.password = await hash(this.password, salt);
+});
 
-const usersModel = mongoose.model<IUser>("User", usersSchema)
+usersSchema.post('save', { errorHandler: true }, (error: any, _, next) => {
+  if (error.code === 11000 && error.name === 'MongoServerError') {
+    next(new Error('User validation failed: email: Email already in use'));
+  } else {
+    next(error);
+  }
+});
 
-export default usersModel
+const usersModel = mongoose.model<UserDocument>('User', usersSchema);
+
+export { usersModel, UserDocument };

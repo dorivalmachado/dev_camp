@@ -1,8 +1,6 @@
-import { IUser } from "./users/users.interface"
+import { UserDocument } from '../models/users.model';
 
-interface IContext {
-    token: string
-    user?: IUser | undefined
+export interface IContext {
+  token: string
+  user?: UserDocument | undefined
 }
-
-export {IContext}

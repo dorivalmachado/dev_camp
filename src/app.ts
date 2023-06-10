@@ -1,6 +1,5 @@
-import express, { Express } from "express";
+import express, { Express } from 'express';
 
-const app: Express = express()
+const app: Express = express();
 
-
-export default app
+export default app;

@@ -11,6 +11,12 @@ interface IMutationAddNewBootcamp {
     email: string
     address: string
     careers: string[]
+    housing?: boolean
+    jobAssistance?: boolean
+    jobGuarantee?: boolean
+    acceptGi?: boolean
 }
 
-export {IQueryBootcamps, IMutationAddNewBootcamp}
+type IMutationUpdateBootcamp = Partial<IMutationAddNewBootcamp> & {id: string}
+
+export { IQueryBootcamps, IMutationAddNewBootcamp, IMutationUpdateBootcamp };
