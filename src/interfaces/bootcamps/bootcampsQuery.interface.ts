@@ -3,4 +3,14 @@ interface IQueryBootcamps {
     limit: number | undefined
 }
 
-export {IQueryBootcamps}
+interface IMutationAddNewBootcamp {
+    name: string
+    description: string
+    website: string
+    phone: string
+    email: string
+    address: string
+    careers: string[]
+}
+
+export {IQueryBootcamps, IMutationAddNewBootcamp}

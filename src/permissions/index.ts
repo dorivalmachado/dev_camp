@@ -1,5 +1,5 @@
-import { shield } from "graphql-shield";
-import { isAuthenticated } from "./rules";
+import { allow, shield } from "graphql-shield";
+import { isAuthenticated, isPublisher } from "./rules";
 
 const permissions = shield({
     Query: {
@@ -11,7 +11,11 @@ const permissions = shield({
         deleteUser: isAuthenticated,
         sendConfirmEmailToken: isAuthenticated,
         confirmEmail: isAuthenticated,
+        addNewBootcamp: isPublisher
     }
+}, {
+    fallbackRule: allow,
+    allowExternalErrors: true
 })
 
 export {permissions}

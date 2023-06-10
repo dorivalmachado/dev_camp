@@ -1,10 +1,13 @@
-import { IQueryBootcamps } from "../interfaces/bootcamps/bootcampsQuery.interface"
-import { retrieveAllBootcampsService } from "../services/bootcamps.service"
+import { IMutationAddNewBootcamp, IQueryBootcamps } from "../interfaces/bootcamps/bootcampsQuery.interface"
+import { createBootcampService, retrieveAllBootcampsService } from "../services/bootcamps.service"
 
 const Query = {
-    bootcamps: (_parent: any, args: IQueryBootcamps) => retrieveAllBootcampsService(args.limit, args.page),
+    bootcamps: (_parent: any, args: IQueryBootcamps) => retrieveAllBootcampsService(args),
 }
 
-// const Mutation {}
+const Mutation = {
+    addNewBootcamp: (_parent: any, args: IMutationAddNewBootcamp) => createBootcampService(args),
 
-export {Query}
+}
+
+export {Query, Mutation}

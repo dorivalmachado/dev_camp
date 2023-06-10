@@ -9,12 +9,7 @@ const Query = {
 }
 
 const Mutation = {
-    addNewUser: (_parent: any, args: IMutationAddNewUser) => createUserService(
-        args.name,
-        args.email,
-        args.role,
-        args.password
-    ),
+    addNewUser: (_parent: any, args: IMutationAddNewUser) => createUserService(args),
     loginUser: (_parent: any, args: IMutationLogin) => loginUserService(args.email, args.password),
     forgotPassword: (_parent: any, args: IMutationForgotPassword) => sendTokenService(args.email, "Reset password"),
     resetPassword: (_parent: any, args: IMutationResetPassword) => resetPasswordService(args.email, args.newPassword, args.resetPasswordToken),

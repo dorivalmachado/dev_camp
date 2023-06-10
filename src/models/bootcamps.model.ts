@@ -74,7 +74,7 @@ const bootcampsSchema = new mongoose.Schema<IBootcamp>({
         min: [1, "Rating must be at least 1"],
         max: [10, "Rating can not be more than 10"]
     },
-    price: Number,
+    averageCost: Number,
     housing: {
         type: Boolean,
         default: false
@@ -109,23 +109,23 @@ bootcampsSchema.post("save", { errorHandler: true }, function (error: any, _, ne
     };
 })
 
-// bootcampsSchema.pre("save", async function() {
-//     const res: NodeGeocoder.Entry[] = await geocoder.geocode(this.address)
-//     const loc = res[0]
+bootcampsSchema.pre("save", async function() {
+    const res: NodeGeocoder.Entry[] = await geocoder.geocode(this.address)
+    const loc = res[0]
 
-//     this.location = {
-//         type: "Point",
-//         coordinates: [Number(loc.longitude), Number(loc.latitude)],
-//         formattedAddress: String(loc.formattedAddress),
-//         street: String(loc.streetName),
-//         city: String(loc.city),
-//         state: String(loc.stateCode),
-//         zipcode: String(loc.zipcode),
-//         country: String(loc.countryCode),
-//     }
+    this.location = {
+        type: "Point",
+        coordinates: [Number(loc.longitude), Number(loc.latitude)],
+        formattedAddress: String(loc.formattedAddress),
+        street: String(loc.streetName),
+        city: String(loc.city),
+        state: String(loc.stateCode),
+        zipcode: String(loc.zipcode),
+        country: String(loc.countryCode),
+    }
 
-//     this.address = String(loc.formattedAddress)
-// })
+    this.address = String(loc.formattedAddress)
+})
 
 const bootcampsModel = mongoose.model<IBootcamp>("Bootcamp", bootcampsSchema)
 

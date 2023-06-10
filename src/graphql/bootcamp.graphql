@@ -1,8 +1,18 @@
 type Query {
-  bootcamps: [Bootcamp]
+  bootcamps(page: Int, limit: Int): [Bootcamp]
 }
 
-# type Mutation{}
+type Mutation {
+  addNewBootcamp(
+    name: String!
+    description: String!
+    website: String!
+    phone: String!
+    email: String!
+    address: String!
+    careers: [String]!
+  ): Bootcamp
+}
 
 type Bootcamp {
   id: ID
@@ -16,7 +26,7 @@ type Bootcamp {
   location: Location
   careers: [String]!
   averageRating: Float
-  price: Float!
+  averageCost: Float!
   housing: Boolean
   jobAssistance: Boolean
   jobGuarantee: Boolean

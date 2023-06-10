@@ -6,11 +6,17 @@ import "dotenv/config"
 import { VerifyErrors, sign, verify } from "jsonwebtoken";
 import {sendEmail} from "../utils/sendEmail.utils"
 
-const createUserService = async (
-    name: string,
-    email: string,
-    role: string,
-    password: string
+const createUserService = async ({
+        name,
+        email,
+        role,
+        password,
+    }: {
+        name: string,
+        email: string,
+        role: string,
+        password: string
+    }
 ):Promise<Document>  => {
     const user: Document = await usersModel.create({
         name,

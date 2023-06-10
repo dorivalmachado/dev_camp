@@ -10,7 +10,7 @@ interface IBootcamp {
     location: ILocation
     careers: string[]
     averageRating: number | null
-    price: number
+    averageCost: number
     housing: boolean | null
     jobAssistance: boolean | null
     jobGuarantee: boolean | null
