@@ -1,3 +1,5 @@
+import { IUser } from "../users/users.interface"
+
 interface IBootcamp {
     _id: string
     name: string
@@ -15,7 +17,7 @@ interface IBootcamp {
     jobAssistance: boolean | null
     jobGuarantee: boolean | null
     acceptGi: boolean | null
-    user: string
+    user: IUser
 }
 
 interface ILocation{

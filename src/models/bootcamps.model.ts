@@ -91,10 +91,10 @@ const bootcampsSchema = new mongoose.Schema<IBootcamp>({
         type: Boolean,
         default: false
     },
-    user: [{
+    user: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Users"
-    }]
+    }
 })
 
 bootcampsSchema.pre("save", function () {
