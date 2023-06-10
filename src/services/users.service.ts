@@ -33,7 +33,13 @@ const retrieveAllUsersService = async (): Promise<Document[]> => {
     return users
 }
 
-const loginUserService = async (email: string, password: string): Promise<{token: string}> => {
+const loginUserService = async ({
+        email,
+        password,
+    }:{
+        email: string,
+        password: string
+    }): Promise<{token: string}> => {
     const userDoc: Document<unknown, {}, IUser> | null = await usersModel.findOne({email}).select("+password")
 
     if(!userDoc) throw new Error("Invalid email or password")
@@ -48,7 +54,13 @@ const loginUserService = async (email: string, password: string): Promise<{token
     return {token}
 }
 
-const authUserService = async (token: string, secretKey: string): Promise<string> => {
+const authUserService = async ({
+        token,
+        secretKey,
+    }:{
+        token: string,
+        secretKey: string
+    }): Promise<string> => {
     const idOrError: any = await verify(token, secretKey, async (error, decoded: any): Promise< VerifyErrors | string> => {
         if(error) return error
         return decoded.id
@@ -121,7 +133,15 @@ const sendTokenService = async (
     
 }
 
-const resetPasswordService = async (email: string, newPassword: string, resetPasswordToken: string): Promise<{message: string}> => {
+const resetPasswordService = async ({
+        email,
+        newPassword,
+        resetPasswordToken,
+    }:{
+        email: string,
+        newPassword: string,
+        resetPasswordToken: string
+    }): Promise<{message: string}> => {
     const userDocument: Document | null = await usersModel.findOne({email})
     if(!userDocument) throw new Error("User not found")
     
@@ -171,7 +191,15 @@ const confirmEmailService = async (email: string, confirmEmailToken: string): Pr
     return {message: "Email confirmed"}
 }
 
-const updatePasswordService = async (email: string, newPassword: string, password: string): Promise<{message: string}> => {
+const updatePasswordService = async (email: string,
+    {
+        newPassword,
+        password,
+    }:{
+        
+        newPassword: string,
+        password: string
+    }): Promise<{message: string}> => {
     const salt = await genSalt(10)
     const hashPassword: string = await hash(newPassword, salt)
 
@@ -187,20 +215,23 @@ const updatePasswordService = async (email: string, newPassword: string, passwor
     return {message: "Password updated"}
 }
 
-const updateUserService = async (
-    id: string,
-    name: string | undefined,
-    email: string | undefined,
-):Promise<Document>  => {
-    const payload: {
-        [key: string]: string | undefined
-    } = {name, email}
-    Object.keys(payload).forEach((key: string) => payload[key] === undefined && delete payload[key])
-    
-    const userDocument: Document | null = await usersModel.findOneAndUpdate({_id: id}, payload, {new: true})
-    if(!userDocument) throw new Error("Invalid credentials")
-    
-    return userDocument
+const updateUserService = async (id: string,
+    {
+        name,
+        email,
+    }:{
+        name?: string,
+        email?: string,
+    }):Promise<Document>  => {
+        const payload: {
+            [key: string]: string | undefined
+        } = {name, email}
+        Object.keys(payload).forEach((key: string) => payload[key] === undefined && delete payload[key])
+        
+        const userDocument: Document | null = await usersModel.findOneAndUpdate({_id: id}, payload, {new: true})
+        if(!userDocument) throw new Error("Invalid credentials")
+        
+        return userDocument
 }
 
 const deleteUserService = async (id: string):Promise<Document>  => {

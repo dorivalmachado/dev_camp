@@ -10,19 +10,19 @@ const Query = {
 
 const Mutation = {
     addNewUser: (_parent: any, args: IMutationAddNewUser) => createUserService(args),
-    loginUser: (_parent: any, args: IMutationLogin) => loginUserService(args.email, args.password),
+    loginUser: (_parent: any, args: IMutationLogin) => loginUserService(args),
     forgotPassword: (_parent: any, args: IMutationForgotPassword) => sendTokenService(args.email, "Reset password"),
-    resetPassword: (_parent: any, args: IMutationResetPassword) => resetPasswordService(args.email, args.newPassword, args.resetPasswordToken),
+    resetPassword: (_parent: any, args: IMutationResetPassword) => resetPasswordService(args),
     updatePassword: (
         _parent: any,
         args: IMutationUpdatePassword,
         context: IContext
-    ) => updatePasswordService(context.user!.email, args.newPassword, args.password),
+    ) => updatePasswordService(context.user!.email, args),
     updateUser: (
         _parent: any,
         args: IMutationUpdateUser,
         context: IContext
-    ) => updateUserService(context.user?._id!, args.name, args.email),
+    ) => updateUserService(context.user?._id!, args),
     deleteUser: (_parent: any, _args: any, context: IContext) => deleteUserService(context.user?._id!),
     sendConfirmEmailToken: (_parent: any, _args: any, context: IContext) => sendTokenService(context.user?.email!, "Confirm email"),
     confirmEmail: (_parent: any, args: {confirmEmailToken: string}, context: IContext) => confirmEmailService(context.user?.email!, args.confirmEmailToken),

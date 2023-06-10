@@ -8,7 +8,7 @@ import { IUser } from "../interfaces/users/users.interface";
 const isUser = rule()(async (_parent: any, _args: any, context: IContext): Promise<boolean> => {
     const {token} = context
 
-    const id: string = await authUserService(token, String(process.env.JWT_SECRET_KEY))
+    const id: string = await authUserService({token, secretKey: String(process.env.JWT_SECRET_KEY)})
     const userDocument: Document = await retrieveUserById(id)
 
     const user: IUser = userDocument.toObject()
@@ -20,7 +20,7 @@ const isUser = rule()(async (_parent: any, _args: any, context: IContext): Promi
 const isPublisher = rule()(async (_parent: any, _args: any, context: IContext): Promise<boolean> => {
     const {token} = context
 
-    const id: string = await authUserService(token, String(process.env.JWT_SECRET_KEY))
+    const id: string = await authUserService({token, secretKey: String(process.env.JWT_SECRET_KEY)})
     const userDocument: Document = await retrieveUserById(id)
 
     const user: IUser = userDocument.toObject()
