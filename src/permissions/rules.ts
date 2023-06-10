@@ -1,34 +1,41 @@
-import { or, rule } from "graphql-shield";
-import { IContext } from "../interfaces/context.interface";
-import { authUserService, retrieveUserById } from "../services/users.service";
-import "dotenv/config"
-import { Document } from "mongoose";
-import { IUser } from "../interfaces/users.interface";
+import { or, rule } from 'graphql-shield';
+import { IContext } from '../interfaces/context.interface';
+import { authUserService, retrieveUserById } from '../services/users.service';
+import 'dotenv/config';
+import { RoleTypes } from '../models/users.model';
 
 const isUser = rule()(async (_parent: any, _args: any, context: IContext): Promise<boolean> => {
-    const {token} = context
+  const { token } = context;
 
-    const id: string = await authUserService(token, String(process.env.JWT_SECRET_KEY))
-    const userDocument: Document = await retrieveUserById(id)
+  const id: string = await authUserService({
+    token,
+    secretKey: String(process.env.JWT_SECRET_KEY),
+  });
+  const user = await retrieveUserById(id);
 
-    const user: IUser = userDocument.toObject()
-    context.user = user
+  context.user = user;
 
-    return user.role === "user"
-})
+  return user.role === RoleTypes.USER;
+});
 
-const isPublisher = rule()(async (_parent: any, _args: any, context: IContext): Promise<boolean> => {
-    const {token} = context
+const isPublisher = rule()(async (
+  _parent: any,
+  _args: any,
+  context: IContext,
+): Promise<boolean> => {
+  const { token } = context;
 
-    const id: string = await authUserService(token, String(process.env.JWT_SECRET_KEY))
-    const userDocument: Document = await retrieveUserById(id)
+  const id: string = await authUserService({
+    token,
+    secretKey: String(process.env.JWT_SECRET_KEY),
+  });
+  const user = await retrieveUserById(id);
 
-    const user: IUser = userDocument.toObject()
-    context.user = user
+  context.user = user;
 
-    return user.role === "publisher"
-})
+  return user.role === RoleTypes.PUBLISHER;
+});
 
-const isAuthenticated = or(isPublisher, isUser)
+const isAuthenticated = or(isPublisher, isUser);
 
-export {isAuthenticated, isPublisher, isUser}
+export { isAuthenticated, isPublisher, isUser };

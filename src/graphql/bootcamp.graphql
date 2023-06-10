@@ -1,0 +1,67 @@
+type Query {
+  bootcamps(page: Int, limit: Int): [Bootcamp]
+  bootcamp(id: ID!): Bootcamp
+}
+
+type Mutation {
+  addNewBootcamp(
+    name: String!
+    description: String!
+    website: String!
+    phone: String!
+    email: String!
+    address: String!
+    careers: [String]!
+    housing: Boolean
+    jobAssistance: Boolean
+    jobGuarantee: Boolean
+    acceptGi: Boolean
+    user: ID
+  ): Bootcamp
+  updateBootcamp(
+    id: ID!
+    name: String
+    description: String
+    website: String
+    phone: String
+    email: String
+    address: String
+    careers: [String]
+    housing: Boolean
+    jobAssistance: Boolean
+    jobGuarantee: Boolean
+    acceptGi: Boolean
+  ): Bootcamp
+  deleteBootcamp(id: ID!): Bootcamp
+}
+
+type Bootcamp {
+  id: ID
+  name: String!
+  slug: String!
+  description: String!
+  website: String!
+  phone: String!
+  email: String!
+  address: String!
+  location: Location
+  careers: [String]!
+  averageRating: Float
+  averageCost: Float
+  housing: Boolean
+  jobAssistance: Boolean
+  jobGuarantee: Boolean
+  acceptGi: Boolean
+  user: User
+}
+
+type Location {
+  type: String
+  coordinates: [Float]
+  formattedAddress: String
+  street: String
+  city: String
+  state: String
+  zipcode: String
+  country: String
+}
