@@ -2,6 +2,7 @@ import { or, rule } from 'graphql-shield';
 import { IContext } from '../interfaces/context.interface';
 import { authUserService, retrieveUserById } from '../services/users.service';
 import 'dotenv/config';
+import { RoleTypes } from '../models/users.model';
 
 const isUser = rule()(async (_parent: any, _args: any, context: IContext): Promise<boolean> => {
   const { token } = context;
@@ -14,7 +15,7 @@ const isUser = rule()(async (_parent: any, _args: any, context: IContext): Promi
 
   context.user = user;
 
-  return user.role === 'user';
+  return user.role === RoleTypes.USER;
 });
 
 const isPublisher = rule()(async (
@@ -32,7 +33,7 @@ const isPublisher = rule()(async (
 
   context.user = user;
 
-  return user.role === 'publisher';
+  return user.role === RoleTypes.PUBLISHER;
 });
 
 const isAuthenticated = or(isPublisher, isUser);

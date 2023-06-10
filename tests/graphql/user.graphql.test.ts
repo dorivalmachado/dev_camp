@@ -1,5 +1,5 @@
-import usersModel, { RoleTypes } from '../../src/schemas/users.schema';
-import { buildApolloServer } from '../setup';
+import { RoleTypes, usersModel } from '../../src/models/users.model';
+import buildApolloServer from '../setup';
 
 const ADD_USER = `mutation AddNewUser(
   $name: String!,

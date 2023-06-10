@@ -5,7 +5,7 @@ import { loadFilesSync } from '@graphql-tools/load-files';
 import { makeExecutableSchema } from '@graphql-tools/schema';
 import express from 'express';
 import { applyMiddleware } from 'graphql-middleware';
-import { permissions } from '../src/permissions';
+import permissions from '../src/permissions';
 
 beforeAll(async () => {
   await mongoose.connect(process.env.MONGO_URL!.toString());
@@ -24,7 +24,7 @@ afterAll(async () => {
   await mongoose.connection.close();
 });
 
-export const buildApolloServer = () => {
+const buildApolloServer = () => {
   const app = express();
   const typeDefs = loadFilesSync('**/*', { extensions: ['.graphql'] });
   const resolvers = loadFilesSync('**/*', { extensions: ['.resolvers.ts'] });
@@ -40,3 +40,5 @@ export const buildApolloServer = () => {
 
   return testServer;
 };
+
+export default buildApolloServer;

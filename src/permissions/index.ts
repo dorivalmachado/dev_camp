@@ -13,6 +13,7 @@ const permissions = shield({
     confirmEmail: isAuthenticated,
     addNewBootcamp: isPublisher,
     updateBootcamp: isPublisher,
+    deleteBootcamp: isPublisher,
   },
 }, {
   fallbackRule: allow,

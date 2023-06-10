@@ -1,10 +1,16 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable no-shadow */
 import mongoose, { Document } from 'mongoose';
 import { genSalt, hash } from 'bcryptjs';
 
+enum RoleTypes {
+  USER = 'USER',
+  PUBLISHER = 'PUBLISHER'
+}
 interface UserDocument extends Document{
   name: string
   email: string
-  role: string
+  role: RoleTypes
   password: string
   resetPasswordToken: string | null
   resetPasswordExpire: Date | null
@@ -26,8 +32,8 @@ const usersSchema = new mongoose.Schema<UserDocument>({
   },
   role: {
     type: String,
-    enum: ['user', 'publisher'],
-    default: 'user',
+    enum: Object.values(RoleTypes),
+    default: RoleTypes.USER,
   },
   password: {
     type: String,
@@ -59,4 +65,4 @@ usersSchema.post('save', { errorHandler: true }, (error: any, _, next) => {
 
 const usersModel = mongoose.model<UserDocument>('User', usersSchema);
 
-export { usersModel, UserDocument };
+export { usersModel, UserDocument, RoleTypes };

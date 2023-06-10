@@ -32,6 +32,7 @@ type Mutation {
     jobGuarantee: Boolean
     acceptGi: Boolean
   ): Bootcamp
+  deleteBootcamp(id: ID!): Bootcamp
 }
 
 type Bootcamp {

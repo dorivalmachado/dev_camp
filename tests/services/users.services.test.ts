@@ -1,4 +1,4 @@
-import usersModel, { RoleTypes } from '../../src/schemas/users.schema';
+import { usersModel, RoleTypes } from '../../src/models/users.model';
 import { createUserService } from '../../src/services/users.service';
 
 describe('users.services', () => {

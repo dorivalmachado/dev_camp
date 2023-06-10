@@ -40,12 +40,12 @@ const Mutation = {
     _parent: any,
     args: IMutationUpdateUser,
     context: IContext,
-  ) => updateUserService(context.user?._id!, args),
+  ) => updateUserService(context.user?._id, args),
   deleteUser: (
     _parent: any,
     _args: any,
     context: IContext,
-  ) => deleteUserService(context.user?._id!),
+  ) => deleteUserService(context.user?._id),
   sendConfirmEmailToken: (_parent: any, _args: any, context: IContext) => sendTokenService(context.user?.email!, 'Confirm email'),
   confirmEmail: (
     _parent: any,

@@ -1,7 +1,11 @@
 import { IMutationAddNewBootcamp, IMutationUpdateBootcamp, IQueryBootcamps } from '../interfaces/bootcampsQuery.interface';
 import { IContext } from '../interfaces/context.interface';
 import {
-  createBootcampService, retrieveAllBootcampsService, retrieveBootcampById, updateBootcampService,
+  createBootcampService,
+  deleteBootcampService,
+  retrieveAllBootcampsService,
+  retrieveBootcampById,
+  updateBootcampService,
 } from '../services/bootcamps.service';
 import { retrieveUserById } from '../services/users.service';
 
@@ -19,12 +23,17 @@ const Mutation = {
     _parent: any,
     args: IMutationAddNewBootcamp,
     context: IContext,
-  ) => createBootcampService(context.user?._id!, args),
+  ) => createBootcampService(context.user?._id, args),
   updateBootcamp: (
     _parent: any,
     args: IMutationUpdateBootcamp,
     context: IContext,
-  ) => updateBootcampService(context.user?._id!, args),
+  ) => updateBootcampService(context.user?._id, args),
+  deleteBootcamp: (
+    _parent: any,
+    args: {id: string},
+    context: IContext,
+  ) => deleteBootcampService(args.id, context.user?.id),
 };
 
 export { Query, Mutation, Bootcamp };
