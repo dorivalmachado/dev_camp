@@ -14,7 +14,7 @@ interface IUser {
 
 type IMutationAddNewUser = Pick<IUser, 'name' | 'email' | 'role' | 'password'>
 
-type IMutationUpdateUser = Partial<Pick<IUser, 'name' | 'email' | 'role'>>
+type IMutationUpdateUser = Partial<Pick<IUser, 'name' | 'email'>>
 
 type IMutationLogin = Pick<IUser, 'email' | 'password'>
 

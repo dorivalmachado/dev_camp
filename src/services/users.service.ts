@@ -220,16 +220,14 @@ const updateUserService = async (
   {
     name,
     email,
-    role,
   }:{
         name?: string,
         email?: string,
-        role?: RoleTypes
     },
 ) => {
   const payload: {
             [key: string]: string | undefined
-        } = { name, email, role };
+        } = { name, email };
   Object.keys(payload).forEach((key: string) => payload[key] === undefined && delete payload[key]);
 
   const userDocument = await usersModel.findOneAndUpdate({ _id: id }, payload, { new: true });
