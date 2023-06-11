@@ -8,7 +8,7 @@ import { applyMiddleware } from 'graphql-middleware';
 import permissions from '../src/permissions';
 
 beforeAll(async () => {
-  await mongoose.connect(process.env.MONGO_URL!.toString());
+  await mongoose.connect(process.env.MONGO_URL_TEST!.toString());
 });
 
 afterEach(async () => {

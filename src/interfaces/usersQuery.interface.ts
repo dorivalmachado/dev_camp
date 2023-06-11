@@ -1,8 +1,10 @@
+import { RoleTypes } from '../models/users.model';
+
 interface IUser {
   _id: string
   name: string
   email: string
-  role: string
+  role: RoleTypes
   password: string
   resetPasswordToken: string | null
   resetPasswordExpire: Date | null
@@ -12,7 +14,7 @@ interface IUser {
 
 type IMutationAddNewUser = Pick<IUser, 'name' | 'email' | 'role' | 'password'>
 
-type IMutationUpdateUser = Partial<Pick<IUser, 'name' | 'email'>>
+type IMutationUpdateUser = Partial<Pick<IUser, 'name' | 'email' | 'role'>>
 
 type IMutationLogin = Pick<IUser, 'email' | 'password'>
 

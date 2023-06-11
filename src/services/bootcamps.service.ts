@@ -1,4 +1,3 @@
-import { Document } from 'mongoose';
 import { bootcampsModel } from '../models/bootcamps.model';
 import { IMutationUpdateBootcamp } from '../interfaces/bootcampsQuery.interface';
 
