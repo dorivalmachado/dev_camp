@@ -20,4 +20,11 @@ const retireveAllCoursesService = async ({
   return courses;
 };
 
-export { createCourseService, retireveAllCoursesService };
+const retrieveCourseById = async (id: string) => {
+  const course = await coursesModel.findById(id);
+  if (!course) throw new Error('Course not found');
+
+  return course;
+};
+
+export { createCourseService, retireveAllCoursesService, retrieveCourseById };

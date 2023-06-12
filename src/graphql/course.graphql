@@ -1,5 +1,6 @@
 type Query {
   courses(page: Int, limit: Int): [Course]
+  course(id: ID!): Course
 }
 
 type Mutation {
