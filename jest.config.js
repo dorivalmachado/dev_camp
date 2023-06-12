@@ -10,7 +10,7 @@ module.exports = {
       lines: 95,
     },
   },
-  setupFiles: ['./tests/setEnvVars.js'],
+  // setupFiles: ['./tests/setEnvVars.js'],
   // setupFiles: ['dotenv/config'],
   setupFilesAfterEnv: ['./tests/setup.ts'],
 };

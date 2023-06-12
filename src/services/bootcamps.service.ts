@@ -1,4 +1,3 @@
-import { Document } from 'mongoose';
 import { bootcampsModel } from '../models/bootcamps.model';
 import { IMutationUpdateBootcamp } from '../interfaces/bootcampsQuery.interface';
 
@@ -6,22 +5,16 @@ const retrieveAllBootcampsService = async ({
   limit = 10,
   page = 1,
 }:{limit?: number, page?: number}) => {
-  if (limit < 0 || page < 0) throw new Error('Limit and page mst be greater than 0');
+  if (limit <= 0 || page <= 0) throw new Error('Limit and page must be greater than 0');
   const skip: number = (page - 1) * limit;
   const bootcamps = await bootcampsModel.find({}, null, { limit, skip });
 
   return bootcamps;
 };
 
-const createBootcampService = async (userId: string, {
-  name,
-  description,
-  website,
-  phone,
-  email,
-  address,
-  careers,
-}:{
+const createBootcampService = async (
+  userId: string,
+  payload: {
             name: string,
             description: string,
             website: string,
@@ -33,20 +26,13 @@ const createBootcampService = async (userId: string, {
             jobAssistance?: boolean,
             jobGuarantee?: boolean,
             acceptGi?: boolean
-        }) => {
+        },
+) => {
   const bootCampFromUser = await bootcampsModel.findOne({ user: userId });
   if (bootCampFromUser) throw new Error('Each publisher can own only one bootcamp');
 
-  const bootcamp = await bootcampsModel.create({
-    name,
-    description,
-    website,
-    phone,
-    email,
-    address,
-    careers,
-    user: userId,
-  });
+  const newPayload = { ...payload, user: userId };
+  const bootcamp = await bootcampsModel.create(newPayload);
 
   return bootcamp;
 };
@@ -84,7 +70,6 @@ const deleteBootcampService = async (id: string, userId: string) => {
   if (!bootcampDoc.user._id.equals(userId)) throw new Error('Permission denied');
 
   const bootcamp = await bootcampsModel.findOneAndDelete({ _id: id });
-  if (!bootcamp) throw new Error('Invalid credentials');
 
   return bootcamp;
 };

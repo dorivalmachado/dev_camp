@@ -1,8 +1,10 @@
+import { RoleTypes } from '../models/users.model';
+
 interface IUser {
   _id: string
   name: string
   email: string
-  role: string
+  role: RoleTypes
   password: string
   resetPasswordToken: string | null
   resetPasswordExpire: Date | null

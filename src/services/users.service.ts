@@ -1,7 +1,7 @@
 import { VerifyErrors, sign, verify } from 'jsonwebtoken';
 import { Document } from 'mongoose';
 import { compare, genSalt, hash } from 'bcryptjs';
-import { usersModel } from '../models/users.model';
+import { RoleTypes, usersModel } from '../models/users.model';
 import 'dotenv/config';
 import sendEmail from '../utils/sendEmail.utils';
 
@@ -13,7 +13,7 @@ const createUserService = async ({
 }: {
         name: string,
         email: string,
-        role: string,
+        role: RoleTypes,
         password: string
     }) => {
   const user = await usersModel.create({
@@ -197,7 +197,6 @@ const updatePasswordService = async (
     newPassword,
     password,
   }:{
-
         newPassword: string,
         password: string
     },
@@ -232,14 +231,14 @@ const updateUserService = async (
   Object.keys(payload).forEach((key: string) => payload[key] === undefined && delete payload[key]);
 
   const userDocument = await usersModel.findOneAndUpdate({ _id: id }, payload, { new: true });
-  if (!userDocument) throw new Error('Invalid credentials');
+  if (!userDocument) throw new Error('User not found');
 
   return userDocument;
 };
 
 const deleteUserService = async (id: string):Promise<Document> => {
   const userDocument = await usersModel.findOneAndDelete({ _id: id });
-  if (!userDocument) throw new Error('Invalid credentials');
+  if (!userDocument) throw new Error('User not found');
 
   return userDocument;
 };
