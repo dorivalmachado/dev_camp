@@ -16,6 +16,18 @@ type Mutation {
     subject: String!
     bootcamp: String!
   ): Course
+  updateCourse(
+    id: ID!
+    title: String
+    description: String
+    weeks: String
+    tuition: Float
+    minimumSkill: String
+    scholarshipAvailable: Boolean
+    credits: Int
+    subject: String
+    bootcamp: String
+  ): Course
 }
 
 type Course {

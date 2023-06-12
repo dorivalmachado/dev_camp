@@ -15,4 +15,6 @@ interface IQueryCourses {
   limit: number | undefined
 }
 
-export { IMutationAddNewCourse, IQueryCourses };
+type IMutationUpdateCourse = Partial<IMutationAddNewCourse> & {id: string}
+
+export { IMutationAddNewCourse, IQueryCourses, IMutationUpdateCourse };

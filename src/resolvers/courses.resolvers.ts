@@ -1,7 +1,7 @@
 import { IContext } from '../interfaces/context.interface';
-import { IMutationAddNewCourse, IQueryCourses } from '../interfaces/coursesQuery.interface';
+import { IMutationAddNewCourse, IMutationUpdateCourse, IQueryCourses } from '../interfaces/coursesQuery.interface';
 import { retrieveBootcampById } from '../services/bootcamps.service';
-import { createCourseService, retireveAllCoursesService, retrieveCourseById, retrieveCoursesByBootcampId } from '../services/courses.service';
+import { createCourseService, retireveAllCoursesService, retrieveCourseById, retrieveCoursesByBootcampId, updateCourseService } from '../services/courses.service';
 import { retrieveUserById } from '../services/users.service';
 
 const Query = {
@@ -24,6 +24,11 @@ const Mutation = {
     args: IMutationAddNewCourse,
     context: IContext,
   ) => createCourseService(context.user?._id, args),
+  updateCourse: (
+    _parent: any,
+    args: IMutationUpdateCourse,
+    context: IContext,
+  ) => updateCourseService(context.user?._id, args),
 };
 
 export { Query, Mutation, Course };
