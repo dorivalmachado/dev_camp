@@ -70,13 +70,42 @@ const enroll = async (userId: string, courseId: string) => {
   const user = await usersModel.findById(userId);
   if (!user) throw new Error('User not found');
 
-  const course = await coursesModel.findOneAndUpdate(
-    { id: courseId },
+  const course = await coursesModel.findById(courseId);
+
+  const isEnrolled = course?.students.some(
+    (student) => user._id.equals(student._id),
+  );
+
+  if (isEnrolled) throw new Error('User is already enrolled');
+
+  const courseUpdated = await coursesModel.findOneAndUpdate(
+    { _id: courseId },
     { $push: { students: user } },
     { new: true },
   );
 
-  return course;
+  return courseUpdated;
+};
+
+const disenroll = async (userId: string, courseId: string) => {
+  const user = await usersModel.findById(userId);
+  if (!user) throw new Error('User not found');
+
+  const course = await coursesModel.findById(courseId);
+
+  const isEnrolled = course?.students.some(
+    (student) => user._id.equals(student._id),
+  );
+
+  if (!isEnrolled) throw new Error('User is not enrolled');
+
+  const courseUpdated = await coursesModel.findOneAndUpdate(
+    { _id: courseId },
+    { $pull: { students: { $eq: user._id } } },
+    { new: true },
+  );
+
+  return courseUpdated;
 };
 
 export {
@@ -87,4 +116,5 @@ export {
   updateCourseService,
   deleteCourseService,
   enroll,
+  disenroll,
 };
