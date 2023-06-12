@@ -2,7 +2,7 @@ import { IContext } from '../interfaces/context.interface';
 import { IMutationAddNewCourse, IMutationUpdateCourse, IQueryCourses } from '../interfaces/coursesQuery.interface';
 import { retrieveBootcampById } from '../services/bootcamps.service';
 import {
-  createCourseService, deleteCourseService, retireveAllCoursesService, retrieveCourseById, retrieveCoursesByBootcampId, updateCourseService,
+  createCourseService, deleteCourseService, enroll, retireveAllCoursesService, retrieveCourseById, retrieveCoursesByBootcampId, updateCourseService,
 } from '../services/courses.service';
 import { retrieveUserById } from '../services/users.service';
 
@@ -36,6 +36,12 @@ const Mutation = {
     args: {id: string},
     context: IContext,
   ) => deleteCourseService(args.id, context.user?.id),
+  enroll: (
+    _parent: any,
+    args: {id: string},
+    context: IContext,
+  ) => enroll(context.user?._id, args.id),
+  // disenroll: (_parent: any, _args: any, context: IContext) => ,
 };
 
 export { Query, Mutation, Course };

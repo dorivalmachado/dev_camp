@@ -1,5 +1,5 @@
 import { allow, shield } from 'graphql-shield';
-import { isAuthenticated, isPublisher } from './rules';
+import { isAuthenticated, isPublisher, isUser } from './rules';
 
 const permissions = shield({
   Query: {
@@ -17,6 +17,8 @@ const permissions = shield({
     addNewCourse: isPublisher,
     updateCourse: isPublisher,
     deleteCourse: isPublisher,
+    enroll: isUser,
+    disenroll: isUser,
   },
 }, {
   fallbackRule: allow,

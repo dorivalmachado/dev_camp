@@ -1,5 +1,6 @@
 import { IMutationAddNewCourse, IMutationUpdateCourse, IQueryCourses } from '../interfaces/coursesQuery.interface';
 import { coursesModel } from '../models/courses.model';
+import { usersModel } from '../models/users.model';
 import { retrieveBootcampById } from './bootcamps.service';
 
 const createCourseService = async (userId: string, payload: IMutationAddNewCourse) => {
@@ -65,6 +66,19 @@ const deleteCourseService = async (id: string, userId: string) => {
   return course;
 };
 
+const enroll = async (userId: string, courseId: string) => {
+  const user = await usersModel.findById(userId);
+  if (!user) throw new Error('User not found');
+
+  const course = await coursesModel.findOneAndUpdate(
+    { id: courseId },
+    { $push: { students: user } },
+    { new: true },
+  );
+
+  return course;
+};
+
 export {
   createCourseService,
   retireveAllCoursesService,
@@ -72,4 +86,5 @@ export {
   retrieveCoursesByBootcampId,
   updateCourseService,
   deleteCourseService,
+  enroll,
 };

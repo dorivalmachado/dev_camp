@@ -29,6 +29,8 @@ type Mutation {
     bootcamp: String
   ): Course
   deleteCourse(id: ID!): Course
+  enroll(courseId: ID!): Course
+  disenroll(courseId: ID!): Course
 }
 
 type Course {
