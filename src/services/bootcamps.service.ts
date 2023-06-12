@@ -1,5 +1,5 @@
-import { bootcampsModel } from '../models/bootcamps.model';
-import { IMutationUpdateBootcamp } from '../interfaces/bootcampsQuery.interface';
+import { CareersTypes, bootcampsModel } from '../models/bootcamps.model';
+import { IMutationAddNewBootcamp, IMutationUpdateBootcamp } from '../interfaces/bootcampsQuery.interface';
 
 const retrieveAllBootcampsService = async ({
   limit = 10,
@@ -14,19 +14,7 @@ const retrieveAllBootcampsService = async ({
 
 const createBootcampService = async (
   userId: string,
-  payload: {
-            name: string,
-            description: string,
-            website: string,
-            phone: string,
-            email: string,
-            address: string,
-            careers: string[],
-            housing?: boolean,
-            jobAssistance?: boolean,
-            jobGuarantee?: boolean,
-            acceptGi?: boolean
-        },
+  payload: IMutationAddNewBootcamp,
 ) => {
   const bootCampFromUser = await bootcampsModel.findOne({ user: userId });
   if (bootCampFromUser) throw new Error('Each publisher can own only one bootcamp');

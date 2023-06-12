@@ -45,7 +45,6 @@ type Bootcamp {
   address: String!
   location: Location
   careers: [String]!
-  averageRating: Float
   averageCost: Float
   housing: Boolean
   jobAssistance: Boolean
