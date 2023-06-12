@@ -1,10 +1,10 @@
 import { bootcampsModel } from '../models/bootcamps.model';
-import { IMutationAddNewBootcamp, IMutationUpdateBootcamp, IQueryBootcamps } from '../interfaces/bootcampsQuery.interface';
+import { IMutationAddNewBootcamp, IMutationUpdateBootcamp } from '../interfaces/bootcampsQuery.interface';
 
 const retrieveAllBootcampsService = async ({
   limit = 10,
   page = 1,
-}:IQueryBootcamps) => {
+}:{limit?: number, page?: number}) => {
   if (limit <= 0 || page <= 0) throw new Error('Limit and page must be greater than 0');
   const skip: number = (page - 1) * limit;
   const bootcamps = await bootcampsModel.find({}, null, { limit, skip });

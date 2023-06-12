@@ -1,5 +1,6 @@
 import { IMutationAddNewCourse, IQueryCourses } from '../interfaces/coursesQuery.interface';
 import { coursesModel } from '../models/courses.model';
+import { retrieveBootcampById } from './bootcamps.service';
 
 const createCourseService = async (userId: string, payload: IMutationAddNewCourse) => {
   const newPayload = { ...payload, owner: userId };
@@ -27,4 +28,16 @@ const retrieveCourseById = async (id: string) => {
   return course;
 };
 
-export { createCourseService, retireveAllCoursesService, retrieveCourseById };
+const retrieveCoursesByBootcampId = async (id: string) => {
+  await retrieveBootcampById(id);
+  const courses = await coursesModel.find({ bootcamp: id });
+
+  return courses;
+}
+
+export {
+  createCourseService,
+  retireveAllCoursesService,
+  retrieveCourseById,
+  retrieveCoursesByBootcampId,
+};
