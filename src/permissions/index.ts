@@ -16,6 +16,7 @@ const permissions = shield({
     deleteBootcamp: isPublisher,
     addNewCourse: isPublisher,
     updateCourse: isPublisher,
+    deleteCourse: isPublisher,
   },
 }, {
   fallbackRule: allow,

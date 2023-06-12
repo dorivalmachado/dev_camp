@@ -54,10 +54,22 @@ const updateCourseService = async (userId: string, payload: IMutationUpdateCours
   return course;
 };
 
+const deleteCourseService = async (id: string, userId: string) => {
+  const courseDoc = await coursesModel.findById(id);
+  if (!courseDoc) throw new Error('Course not found');
+
+  if (!courseDoc.owner._id.equals(userId)) throw new Error('Permission denied');
+
+  const course = await coursesModel.findOneAndDelete({ _id: id });
+
+  return course;
+};
+
 export {
   createCourseService,
   retireveAllCoursesService,
   retrieveCourseById,
   retrieveCoursesByBootcampId,
   updateCourseService,
+  deleteCourseService,
 };
