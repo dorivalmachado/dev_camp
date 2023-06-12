@@ -133,7 +133,7 @@ bootcampsSchema.pre('save', function () {
 
 bootcampsSchema.post('save', { errorHandler: true }, (error: any, _, next) => {
   if (error.code === 11000 && error.name === 'MongoServerError') {
-    next(new Error('User validation failed: name: Name already in use'));
+    next(new Error('Bootcamp validation failed: name: Name already in use'));
   } else {
     next(error);
   }
