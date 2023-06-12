@@ -1,9 +1,19 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable no-shadow */
 import mongoose, { Document } from 'mongoose';
 import slugify from 'slugify';
 import NodeGeocoder from 'node-geocoder';
 import geocoder from '../utils/geocoder.utils';
 import { UserDocument } from './users.model';
 
+enum CareersTypes {
+  WEB = 'Web Development',
+  MOBILE = 'Mobile Development',
+  UI_UX = 'UI/UX',
+  DATA = 'Data Science',
+  BUSINESS = 'Business',
+  OTHER = 'Other',
+}
 interface ILocation{
   type: string
   coordinates: number[]
@@ -23,8 +33,7 @@ interface BootcampDocument extends Document{
   email: string
   address: string
   location: ILocation
-  careers: string[]
-  averageRating: number | null
+  careers: CareersTypes[]
   averageCost: number | null
   housing: boolean | null
   jobAssistance: boolean | null
@@ -89,19 +98,7 @@ const bootcampsSchema = new mongoose.Schema<BootcampDocument>({
   careers: {
     type: [String],
     required: true,
-    enum: [
-      'Web Development',
-      'Mobile Development',
-      'UI/UX',
-      'Data Science',
-      'Business',
-      'Other',
-    ],
-  },
-  averageRating: {
-    type: Number,
-    min: [1, 'Rating must be at least 1'],
-    max: [10, 'Rating can not be more than 10'],
+    enum: Object.values(CareersTypes),
   },
   averageCost: Number,
   housing: {
@@ -159,4 +156,4 @@ bootcampsSchema.pre('save', async function () {
 
 const bootcampsModel = mongoose.model<BootcampDocument>('Bootcamp', bootcampsSchema);
 
-export { BootcampDocument, bootcampsModel };
+export { BootcampDocument, bootcampsModel, CareersTypes };

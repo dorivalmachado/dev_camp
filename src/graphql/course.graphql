@@ -1,0 +1,49 @@
+type Query {
+  courses(page: Int, limit: Int): [Course]
+  course(id: ID!): Course
+  coursesByBootcamp(id: ID!): [Course]
+}
+
+type Mutation {
+  addNewCourse(
+    title: String!
+    description: String!
+    weeks: String!
+    tuition: Float!
+    minimumSkill: String!
+    scholarshipAvailable: Boolean
+    credits: Int!
+    subject: String!
+    bootcamp: String!
+  ): Course
+  updateCourse(
+    id: ID!
+    title: String
+    description: String
+    weeks: String
+    tuition: Float
+    minimumSkill: String
+    scholarshipAvailable: Boolean
+    credits: Int
+    subject: String
+    bootcamp: String
+  ): Course
+  deleteCourse(id: ID!): Course
+  enroll(courseId: ID!): Course
+  disenroll(courseId: ID!): Course
+}
+
+type Course {
+  id: ID
+  title: String!
+  description: String!
+  weeks: String!
+  tuition: Float!
+  minimumSkill: String!
+  scholarshipAvailable: Boolean
+  credits: Int!
+  subject: String!
+  bootcamp: Bootcamp!
+  students: [User]
+  owner: User!
+}

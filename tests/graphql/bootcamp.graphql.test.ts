@@ -1,4 +1,4 @@
-import { bootcampsModel } from '../../src/models/bootcamps.model';
+import { CareersTypes, bootcampsModel } from '../../src/models/bootcamps.model';
 import { RoleTypes, usersModel } from '../../src/models/users.model';
 import { loginUserService } from '../../src/services/users.service';
 import buildApolloServer from '../setup';
@@ -114,7 +114,7 @@ describe('bootcamp.graphql', () => {
     phone: '4035651022',
     email: 'john-bootcamp@bootcamp.com',
     address: '520 3 Ave SW, Calgary, AB T2P 0R3',
-    careers: ['Web Development', 'UI/UX'],
+    careers: [CareersTypes.WEB, CareersTypes.UI_UX],
     housing: true,
   };
 
