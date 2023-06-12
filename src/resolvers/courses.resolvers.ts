@@ -1,10 +1,12 @@
 import { IContext } from '../interfaces/context.interface';
-import { IMutationAddNewCourse } from '../interfaces/coursesQuery.interface';
+import { IMutationAddNewCourse, IQueryCourses } from '../interfaces/coursesQuery.interface';
 import { retrieveBootcampById } from '../services/bootcamps.service';
-import { createCourseService } from '../services/courses.service';
+import { createCourseService, retireveAllCoursesService } from '../services/courses.service';
 import { retrieveUserById } from '../services/users.service';
 
-const Query = {};
+const Query = {
+  courses: (_parent: any, args: IQueryCourses) => retireveAllCoursesService(args),
+};
 
 const Course = {
   bootcamp: ({ bootcamp }: {bootcamp: string}) => retrieveBootcampById(bootcamp),

@@ -1,4 +1,6 @@
-# type Query {}
+type Query {
+  courses(page: Int, limit: Int): [Course]
+}
 
 type Mutation {
   addNewCourse(

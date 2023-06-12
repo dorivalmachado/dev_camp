@@ -193,7 +193,8 @@ describe('users.services', () => {
       const user = await usersModel.create(inputPublisher1);
       const bootcamp = await createBootcampService(user._id, input);
 
-      const bootcamps = await retrieveAllBootcampsService({});
+      const payload = { limit: undefined, page: undefined };
+      const bootcamps = await retrieveAllBootcampsService(payload);
       const bootcampsMatch = bootcamp._id.equals(bootcamps[0]._id);
 
       expect(bootcamps).toHaveLength(1);

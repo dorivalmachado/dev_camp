@@ -10,4 +10,9 @@ interface IMutationAddNewCourse {
   bootcamp: string
 }
 
-export { IMutationAddNewCourse };
+interface IQueryCourses {
+  page: number | undefined
+  limit: number | undefined
+}
+
+export { IMutationAddNewCourse, IQueryCourses };
